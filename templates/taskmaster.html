@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>TaskMaster</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="task.css">
+        
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <style>
+            body, h1, h2, table {
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                font-family: 'Arial', sans-serif;
+                background-color: #e0e0e0; /* Changed background color */
+            }
+
+            h1 {
+                color: #ff6600; /* Changed heading color */
+                text-align: center;
+                padding: 10px 0; /* Reduced padding */
+                background-color: #333; /* Changed heading background color */
+                margin: 0; /* Remove default margin */
+            }
+
+            .add_task {
+                background-color: #f9f9f9; /* Changed form background color */
+                padding: 15px;
+                margin: 50px;
+                border-radius: 8px;
+                box-shadow: 0 0 8px rgba(0, 0, 0, 0.2); /* Reduced box shadow */
+            }
+
+            .add_task h2 {
+                color: #333;
+                margin-bottom:3px;
+            }
+
+            .add_task form {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .add_task input[type="text"] {
+                width: 98%; /* Reduced width */
+                padding: 8px; /* Reduced padding */
+                margin: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+
+            .add_task input[type="submit"] {
+                width: 50%;
+                margin: auto;
+                background-color: #009688; /* Changed button color */
+                color: #fff;
+                padding: 8px; /* Reduced padding */
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+
+            .add_task input[type="submit"]:hover {
+                background-color: #00796b; /* Changed button hover color */
+            }
+
+            .show_tasks {
+                margin: 35px;
+                background-color: #fff;
+                border-radius: 8px;
+                box-shadow: 0 0 8px rgba(0, 0, 0, 0.2); /* Reduced box shadow */
+            }
+
+            .table-container {
+                max-width: 80%; /* Ensure table container takes full width */
+                overflow-x: auto; /* Added horizontal scroll for small screens */
+            }
+
+            .table {
+                width: 100%; /* Set table width to 100% */
+                border-collapse: collapse;
+            }
+
+            .table th, .table td {
+                padding: 12px; /* Reduced padding */
+                text-align:center;
+                border-bottom: 1px solid #ddd;
+            }
+
+            .table th {
+                background-color: #009688;
+                color: #fff;
+            }
+
+            .table a {
+                text-decoration: none;
+                color: #007bff;
+            }
+
+            .table a:hover {
+                text-decoration: underline;
+            }
+        </style>
+
+    </head>
+    <body>
+        <h1 id="mainH">Task Master</h1>
+        <div class="add_task">
+            <h2>Add Your Task</h2>
+            <form action="" method="POST" >
+                {% csrf_token %}
+                
+                Title:<input type="text" placeholder="Enter your task" name="title" required/>
+                <input type="submit" value="ADD">
+            </form>
+        </div>
+        <div class="show_tasks">
+            {% if tasks %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Task</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for task in tasks %}
+                        <tr>
+                            <td scope="row">{{task.title}}</td>
+                            <td>{{task.date}}</td>
+                            <td>
+                                <a href="/edit_task/{{task.id}}"><i class="fa fa-edit" style="font-size:30px;color:blue"></i></a>
+                                <a href="/delete_task/{{task.id}}">
+                                    <i class="fa fa-trash" style="font-size:32px;color:red;margin-left:3px"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+    </body>
+</html>
